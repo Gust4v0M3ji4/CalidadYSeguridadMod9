@@ -1,53 +1,42 @@
 ﻿@model IEnumerable<peliculasweb.Models.Proyeccion>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Proyecciones";
 }
 
-<h1>Index</h1>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-danger">Proyecciones</h1>
+        <a asp-action="Create" class="btn btn-success btn-lg">
+            <i class="fas fa-plus"></i> Crear Nueva Proyección
+        </a>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaInicio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaFin)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pelicula)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cine)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaInicio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaFin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pelicula.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cine.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-img-top bg-info d-flex align-items-center justify-content-center text-white"
+                        style="height: 150px;">
+                        <i class="fas fa-calendar-alt fa-3x"></i>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Proyección</h5>
+                        <p class="card-text"><strong>Película:</strong> @item.Pelicula?.Titulo</p>
+                        <p class="card-text"><strong>Cine:</strong> @item.Cine?.Nombre</p>
+                        <p class="card-text"><strong>Inicio:</strong> @item.FechaInicio.ToString("dd/MM/yyyy HH:mm")</p>
+                        <p class="card-text"><strong>Fin:</strong> @item.FechaFin.ToString("dd/MM/yyyy HH:mm")</p>
+                        <div class="mt-auto">
+                            <a asp-action="Details" asp-route-id="@item.Id"
+                                class="btn btn-outline-primary btn-sm">Detalles</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-secondary btn-sm">Editar</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id"
+                                class="btn btn-outline-danger btn-sm">Eliminar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

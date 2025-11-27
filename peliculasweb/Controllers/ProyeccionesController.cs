@@ -49,8 +49,8 @@ namespace peliculasweb.Controllers
         // GET: Proyecciones/Create
         public IActionResult Create()
         {
-            ViewData["CineId"] = new SelectList(_context.Cines, "Id", "Id");
-            ViewData["PeliculaId"] = new SelectList(_context.Peliculas, "Id", "Id");
+            ViewData["CineId"] = new SelectList(_context.Cines, "Id", "Nombre");
+            ViewData["PeliculaId"] = new SelectList(_context.Peliculas, "Id", "Titulo");
             return View();
         }
 
@@ -67,8 +67,8 @@ namespace peliculasweb.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CineId"] = new SelectList(_context.Cines, "Id", "Id", proyeccion.CineId);
-            ViewData["PeliculaId"] = new SelectList(_context.Peliculas, "Id", "Id", proyeccion.PeliculaId);
+            ViewData["CineId"] = new SelectList(_context.Cines, "Id", "Nombre", proyeccion.CineId);
+            ViewData["PeliculaId"] = new SelectList(_context.Peliculas, "Id", "Titulo", proyeccion.PeliculaId);
             return View(proyeccion);
         }
 
@@ -85,8 +85,8 @@ namespace peliculasweb.Controllers
             {
                 return NotFound();
             }
-            ViewData["CineId"] = new SelectList(_context.Cines, "Id", "Id", proyeccion.CineId);
-            ViewData["PeliculaId"] = new SelectList(_context.Peliculas, "Id", "Id", proyeccion.PeliculaId);
+            ViewData["CineId"] = new SelectList(_context.Cines, "Id", "Nombre", proyeccion.CineId);
+            ViewData["PeliculaId"] = new SelectList(_context.Peliculas, "Id", "Titulo", proyeccion.PeliculaId);
             return View(proyeccion);
         }
 
@@ -122,8 +122,8 @@ namespace peliculasweb.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CineId"] = new SelectList(_context.Cines, "Id", "Id", proyeccion.CineId);
-            ViewData["PeliculaId"] = new SelectList(_context.Peliculas, "Id", "Id", proyeccion.PeliculaId);
+            ViewData["CineId"] = new SelectList(_context.Cines, "Id", "Nombre", proyeccion.CineId);
+            ViewData["PeliculaId"] = new SelectList(_context.Peliculas, "Id", "Titulo", proyeccion.PeliculaId);
             return View(proyeccion);
         }
 

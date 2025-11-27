@@ -1,53 +1,68 @@
 ﻿@model peliculasweb.Models.Trabajador
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Crear Trabajador";
 }
 
-<h1>Create</h1>
-
-<h4>Trabajador</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Biografia" class="control-label"></label>
-                <input asp-for="Biografia" class="form-control" />
-                <span asp-validation-for="Biografia" class="text-danger"></span>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-success text-white">
+                    <h2 class="card-title mb-0">
+                        <i class="fas fa-plus"></i> Crear Nuevo Trabajador
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div class="form-group mb-3">
+                            <label asp-for="Nombre" class="form-label"></label>
+                            <input asp-for="Nombre" class="form-control" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="Rol" class="form-label"></label>
+                            <input asp-for="Rol" class="form-control" />
+                            <span asp-validation-for="Rol" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="Biografia" class="form-label"></label>
+                            <textarea asp-for="Biografia" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Biografia" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="FechaNacimiento" class="form-label"></label>
+                            <input asp-for="FechaNacimiento" class="form-control" type="date" />
+                            <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="Nacionalidad" class="form-label"></label>
+                            <input asp-for="Nacionalidad" class="form-control" />
+                            <span asp-validation-for="Nacionalidad" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Imagen</label>
+                            <input type="file" asp-for="ImagenArchivo" name="ImagenArchivo" class="form-control" />
+                        </div>
+                        <div class="form-group text-center">
+                            <input type="submit" value="Crear" class="btn btn-success btn-lg" />
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver a la Lista
+                    </a>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Rol" class="control-label"></label>
-                <input asp-for="Rol" class="form-control" />
-                <span asp-validation-for="Rol" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaNacimiento" class="control-label"></label>
-                <input asp-for="FechaNacimiento" class="form-control" />
-                <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Nacionalidad" class="control-label"></label>
-                <input asp-for="Nacionalidad" class="form-control" />
-                <span asp-validation-for="Nacionalidad" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

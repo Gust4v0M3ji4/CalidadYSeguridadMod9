@@ -38,6 +38,9 @@ namespace peliculasweb.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImagenRuta")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -49,6 +52,36 @@ namespace peliculasweb.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cines");
+                });
+
+            modelBuilder.Entity("peliculasweb.Models.Director", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Biografia")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaNacimiento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImagenRuta")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nacionalidad")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Directores");
                 });
 
             modelBuilder.Entity("peliculasweb.Models.Genero", b =>
@@ -80,6 +113,9 @@ namespace peliculasweb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("DirectorId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Duracion")
                         .HasColumnType("int");
 
@@ -89,8 +125,7 @@ namespace peliculasweb.Migrations
                     b.Property<int>("GeneroId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Imagen")
-                        .IsRequired()
+                    b.Property<string>("ImagenRuta")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sinopsis")
@@ -102,6 +137,8 @@ namespace peliculasweb.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DirectorId");
 
                     b.HasIndex("GeneroId");
 
@@ -146,6 +183,9 @@ namespace peliculasweb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Biografia")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasMaxLength(13)
@@ -153,6 +193,9 @@ namespace peliculasweb.Migrations
 
                     b.Property<DateTime>("FechaNacimiento")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ImagenRuta")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nacionalidad")
                         .IsRequired()
@@ -236,10 +279,6 @@ namespace peliculasweb.Migrations
                 {
                     b.HasBaseType("peliculasweb.Models.Persona");
 
-                    b.Property<string>("Biografia")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasDiscriminator().HasValue("Actor");
                 });
 
@@ -247,30 +286,26 @@ namespace peliculasweb.Migrations
                 {
                     b.HasBaseType("peliculasweb.Models.Persona");
 
-                    b.Property<string>("Biografia")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Rol")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("Persona", t =>
-                        {
-                            t.Property("Biografia")
-                                .HasColumnName("Trabajador_Biografia");
-                        });
 
                     b.HasDiscriminator().HasValue("Trabajador");
                 });
 
             modelBuilder.Entity("peliculasweb.Models.Pelicula", b =>
                 {
+                    b.HasOne("peliculasweb.Models.Director", "Director")
+                        .WithMany("Peliculas")
+                        .HasForeignKey("DirectorId");
+
                     b.HasOne("peliculasweb.Models.Genero", "Genero")
                         .WithMany("Peliculas")
                         .HasForeignKey("GeneroId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Director");
 
                     b.Navigation("Genero");
                 });
@@ -346,6 +381,11 @@ namespace peliculasweb.Migrations
             modelBuilder.Entity("peliculasweb.Models.Cine", b =>
                 {
                     b.Navigation("Proyecciones");
+                });
+
+            modelBuilder.Entity("peliculasweb.Models.Director", b =>
+                {
+                    b.Navigation("Peliculas");
                 });
 
             modelBuilder.Entity("peliculasweb.Models.Genero", b =>

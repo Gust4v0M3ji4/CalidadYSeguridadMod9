@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # Base de datos SQL Server
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: peliculasweb-db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrong@Passw0rd
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - peliculasweb-network
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P YourStrong@Passw0rd -Q "SELECT 1" -C || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # Aplicación web ASP.NET Core
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: peliculasweb-app
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=db;Database=peliculasweb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True;MultipleActiveResultSets=true
+    ports:
+      - "8080:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./wwwroot/imagenes:/app/wwwroot/imagenes
+    networks:
+      - peliculasweb-network
+    restart: unless-stopped
+
+volumes:
+  sqlserver_data:
+    driver: local
+
+networks:
+  peliculasweb-network:
+    driver: bridge

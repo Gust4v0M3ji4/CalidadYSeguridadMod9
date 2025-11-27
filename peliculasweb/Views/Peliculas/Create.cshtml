@@ -4,54 +4,88 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Pelicula</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Titulo" class="control-label"></label>
-                <input asp-for="Titulo" class="form-control" />
-                <span asp-validation-for="Titulo" class="text-danger"></span>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0"><i class="fas fa-plus"></i> Crear Nueva Película</h4>
+                </div>
+                <form asp-action="Create" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Titulo" class="control-label"></label>
+                                    <input asp-for="Titulo" class="form-control" />
+                                    <span asp-validation-for="Titulo" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Duracion" class="control-label"></label>
+                                    <input asp-for="Duracion" class="form-control" />
+                                    <span asp-validation-for="Duracion" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="Sinopsis" class="control-label"></label>
+                            <textarea asp-for="Sinopsis" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Sinopsis" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="FechaEstreno" class="control-label"></label>
+                                    <input asp-for="FechaEstreno" class="form-control" type="date" />
+                                    <span asp-validation-for="FechaEstreno" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="control-label">Imagen</label>
+                                    <input type="file" asp-for="ImagenArchivo" name="ImagenArchivo"
+                                        class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="GeneroId" class="control-label"></label>
+                                    <select asp-for="GeneroId" class="form-control"
+                                        asp-items="ViewBag.GeneroId"></select>
+                                    <span asp-validation-for="GeneroId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="DirectorId" class="control-label"></label>
+                                    <select asp-for="DirectorId" class="form-control" asp-items="ViewBag.DirectorId">
+                                        <option value="">-- Seleccionar Director --</option>
+                                    </select>
+                                    <span asp-validation-for="DirectorId" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="card-footer text-end">
+                    <a asp-action="Index" class="btn btn-secondary me-2"><i class="fas fa-arrow-left"></i> Volver a la
+                        Lista</a>
+                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i>
+                        Crear</button>
+                </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="Sinopsis" class="control-label"></label>
-                <input asp-for="Sinopsis" class="form-control" />
-                <span asp-validation-for="Sinopsis" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Duracion" class="control-label"></label>
-                <input asp-for="Duracion" class="form-control" />
-                <span asp-validation-for="Duracion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaEstreno" class="control-label"></label>
-                <input asp-for="FechaEstreno" class="form-control" />
-                <span asp-validation-for="FechaEstreno" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Imagen" class="control-label"></label>
-                <input asp-for="Imagen" class="form-control" />
-                <span asp-validation-for="Imagen" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GeneroId" class="control-label"></label>
-                <select asp-for="GeneroId" class ="form-control" asp-items="ViewBag.GeneroId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

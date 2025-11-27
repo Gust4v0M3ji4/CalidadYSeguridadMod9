@@ -10,6 +10,11 @@
 <div>
     <h4>Pelicula</h4>
     <hr />
+    @if (!string.IsNullOrEmpty(Model.ImagenRuta))
+    {
+        <img src="@Model.ImagenRuta" alt="Imagen Pelicula" style="width:120px;" />
+        <br />
+    }
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Titulo)
@@ -36,16 +41,10 @@
             @Html.DisplayFor(model => model.FechaEstreno)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Imagen)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Imagen)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Genero)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Genero.Id)
+            @Model.Genero?.Nombre
         </dd>
     </dl>
     

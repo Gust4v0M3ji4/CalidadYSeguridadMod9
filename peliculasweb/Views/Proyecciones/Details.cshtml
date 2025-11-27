@@ -1,42 +1,51 @@
 ﻿@model peliculasweb.Models.Proyeccion
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles de la Proyección";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Proyeccion</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaInicio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaInicio)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaFin)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaFin)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Pelicula)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Pelicula.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cine)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cine.Id)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="card-title mb-0">
+                        <i class="fas fa-calendar-alt"></i> Proyección
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <div class="bg-info d-flex align-items-center justify-content-center text-white rounded mb-3" style="height: 200px;">
+                                <i class="fas fa-calendar-alt fa-4x"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <dl class="row">
+                                <dt class="col-sm-4">Película:</dt>
+                                <dd class="col-sm-8">@Model.Pelicula?.Titulo</dd>
+                                <dt class="col-sm-4">Cine:</dt>
+                                <dd class="col-sm-8">@Model.Cine?.Nombre</dd>
+                                <dt class="col-sm-4">Fecha Inicio:</dt>
+                                <dd class="col-sm-8">@Model.FechaInicio.ToString("dd/MM/yyyy HH:mm")</dd>
+                                <dt class="col-sm-4">Fecha Fin:</dt>
+                                <dd class="col-sm-8">@Model.FechaFin.ToString("dd/MM/yyyy HH:mm")</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Eliminar
+                    </a>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver a la Lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,51 +1,54 @@
 ﻿@model peliculasweb.Models.Review
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar Review";
 }
 
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Review</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NombreUsuario)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NombreUsuario)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Comentario)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Comentario)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Puntuacion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Puntuacion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fecha)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fecha)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Pelicula)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Pelicula.Id)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="card-title mb-0">
+                        <i class="fas fa-trash"></i> Eliminar Review
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <h4 class="text-center mb-4">¿Estás seguro de que quieres eliminar esta review?</h4>
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <div class="bg-warning d-flex align-items-center justify-content-center text-white rounded mb-3"
+                                style="height: 200px;">
+                                <div>
+                                    <i class="fas fa-star fa-4x mb-2"></i>
+                                    <h3>@Model.Puntuacion/5</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <dl class="row">
+                                <dt class="col-sm-4">Usuario:</dt>
+                                <dd class="col-sm-8">@Model.NombreUsuario</dd>
+                                <dt class="col-sm-4">Comentario:</dt>
+                                <dd class="col-sm-8">@Model.Comentario</dd>
+                                <dt class="col-sm-4">Película:</dt>
+                                <dd class="col-sm-8">@Model.Pelicula?.Titulo</dd>
+                                <dt class="col-sm-4">Fecha:</dt>
+                                <dd class="col-sm-8">@Model.Fecha.ToString("dd/MM/yyyy")</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <form asp-action="Delete" class="d-inline">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="submit" value="Eliminar" class="btn btn-danger btn-lg" />
+                    </form>
+                    <a asp-action="Index" class="btn btn-secondary btn-lg ms-2">
+                        <i class="fas fa-arrow-left"></i> Cancelar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

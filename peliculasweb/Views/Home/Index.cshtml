@@ -1,8 +1,98 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio - Películas Web";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="hero-section bg-primary text-white py-5">
+    <div class="container text-center">
+        <h1 class="display-4 mb-3">🎬 Bienvenido a Películas Web</h1>
+        <p class="lead mb-4">Gestiona tu colección de películas, actores, directores y más.</p>
+    </div>
 </div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="card text-center h-100 shadow">
+                <div class="card-body">
+                    <i class="fas fa-user fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Actores</h5>
+                    <p class="card-text">Gestiona los actores de tus películas favoritas.</p>
+                    <a asp-controller="Actores" asp-action="Index" class="btn btn-primary">Ver Actores</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card text-center h-100 shadow">
+                <div class="card-body">
+                    <i class="fas fa-film fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Películas</h5>
+                    <p class="card-text">Explora y administra tu catálogo de películas.</p>
+                    <a asp-controller="Peliculas" asp-action="Index" class="btn btn-success">Ver Películas</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card text-center h-100 shadow">
+                <div class="card-body">
+                    <i class="fas fa-building fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">Cines</h5>
+                    <p class="card-text">Información sobre cines y proyecciones.</p>
+                    <a asp-controller="Cines" asp-action="Index" class="btn btn-info">Ver Cines</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card text-center h-100 shadow">
+                <div class="card-body">
+                    <i class="fas fa-users fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Trabajadores</h5>
+                    <p class="card-text">Equipo detrás de las películas.</p>
+                    <a asp-controller="Trabajadores" asp-action="Index" class="btn btn-warning">Ver Trabajadores</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100 shadow">
+                <div class="card-body">
+                    <i class="fas fa-video fa-3x text-danger mb-3"></i>
+                    <h5 class="card-title">Directores</h5>
+                    <p class="card-text">Los directores que dan vida a las historias.</p>
+                    <a asp-controller="Directores" asp-action="Index" class="btn btn-danger">Ver Directores</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100 shadow">
+                <div class="card-body">
+                    <i class="fas fa-tags fa-3x text-secondary mb-3"></i>
+                    <h5 class="card-title">Géneros</h5>
+                    <p class="card-text">Clasifica tus películas por género.</p>
+                    <a asp-controller="Generos" asp-action="Index" class="btn btn-secondary">Ver Géneros</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100 shadow">
+                <div class="card-body">
+                    <i class="fas fa-star fa-3x text-dark mb-3"></i>
+                    <h5 class="card-title">Reseñas</h5>
+                    <p class="card-text">Opiniones y calificaciones de usuarios.</p>
+                    <a asp-controller="Reviews" asp-action="Index" class="btn btn-dark">Ver Reseñas</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        transition: transform 0.3s ease;
+    }
+</style>

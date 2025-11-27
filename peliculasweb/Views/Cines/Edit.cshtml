@@ -1,49 +1,71 @@
 ﻿@model peliculasweb.Models.Cine
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Cine";
 }
 
-<h1>Edit</h1>
-
-<h4>Cine</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-warning text-white">
+                    <h2 class="card-title mb-0">
+                        <i class="fas fa-edit"></i> Editar Cine
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <div class="form-group mb-3">
+                            <label asp-for="Nombre" class="form-label"></label>
+                            <input asp-for="Nombre" class="form-control" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="Direccion" class="form-label"></label>
+                            <input asp-for="Direccion" class="form-control" />
+                            <span asp-validation-for="Direccion" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="Region" class="form-label"></label>
+                            <input asp-for="Region" class="form-control" />
+                            <span asp-validation-for="Region" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="Descripcion" class="form-label"></label>
+                            <textarea asp-for="Descripcion" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Descripcion" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Imagen</label>
+                            <input type="file" asp-for="ImagenArchivo" name="ImagenArchivo" class="form-control" />
+                            @if (!string.IsNullOrEmpty(Model.ImagenRuta))
+                            {
+                                <div class="mt-2">
+                                    <img src="@Model.ImagenRuta" alt="Imagen actual" class="img-fluid rounded"
+                                        style="max-height: 200px;">
+                                </div>
+                            }
+                        </div>
+                        <div class="form-group text-center">
+                            <input type="submit" value="Guardar" class="btn btn-warning btn-lg" />
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver a la Lista
+                    </a>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Direccion" class="control-label"></label>
-                <input asp-for="Direccion" class="form-control" />
-                <span asp-validation-for="Direccion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Region" class="control-label"></label>
-                <input asp-for="Region" class="form-control" />
-                <span asp-validation-for="Region" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Descripcion" class="control-label"></label>
-                <input asp-for="Descripcion" class="form-control" />
-                <span asp-validation-for="Descripcion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

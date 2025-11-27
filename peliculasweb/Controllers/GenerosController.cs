@@ -53,16 +53,11 @@ namespace peliculasweb.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion")] Genero genero)
+        public async Task<IActionResult> Create([Bind("Nombre,Descripcion")] Genero genero)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(genero);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(genero);
+            _context.Add(genero);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Generos/Edit/5
@@ -85,7 +80,6 @@ namespace peliculasweb.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Descripcion")] Genero genero)
         {
             if (id != genero.Id)

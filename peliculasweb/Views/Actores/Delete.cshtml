@@ -1,45 +1,55 @@
 ﻿@model peliculasweb.Models.Actor
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar Actor";
 }
 
-<h1>Delete</h1>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">¿Estás seguro de que quieres eliminar este actor?</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            @if (!string.IsNullOrEmpty(Model.ImagenRuta))
+                            {
+                                <img src="@Model.ImagenRuta" class="img-fluid rounded mb-3" alt="Imagen de @Model.Nombre" style="max-height: 200px;">
+                            }
+                            else
+                            {
+                                <div class="bg-secondary d-flex align-items-center justify-content-center text-white rounded mb-3" style="height: 200px;">
+                                    <i class="fas fa-user fa-3x"></i>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-8">
+                            <dl class="row">
+                                <dt class="col-sm-4">Nombre:</dt>
+                                <dd class="col-sm-8">@Model.Nombre</dd>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Actor</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Biografia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Biografia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaNacimiento)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaNacimiento)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nacionalidad)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nacionalidad)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+                                <dt class="col-sm-4">Biografía:</dt>
+                                <dd class="col-sm-8">@Model.Biografia</dd>
+
+                                <dt class="col-sm-4">Fecha de Nacimiento:</dt>
+                                <dd class="col-sm-8">@Model.FechaNacimiento.ToString("dd/MM/yyyy")</dd>
+
+                                <dt class="col-sm-4">Nacionalidad:</dt>
+                                <dd class="col-sm-8">@Model.Nacionalidad</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <form asp-action="Delete" class="d-inline">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="submit" value="Eliminar" class="btn btn-danger" />
+                    </form>
+                    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

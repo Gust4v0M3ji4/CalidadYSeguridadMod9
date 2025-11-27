@@ -1,12 +1,15 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace peliculasweb.Models
 {
     public class Genero
     {
         public int Id { get; set; }
-        public string Nombre { get; set; }
-        public string Descripcion { get; set; }
-        public ICollection<Pelicula> Peliculas { get; set; }
+        [Required]
+        public string? Nombre { get; set; }
+        [Required]
+        public string? Descripcion { get; set; }
+        public List<Pelicula> Peliculas { get; set; } = new();
     }
 }

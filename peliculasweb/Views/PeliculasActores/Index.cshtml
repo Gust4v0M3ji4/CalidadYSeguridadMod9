@@ -1,41 +1,41 @@
 ﻿@model IEnumerable<peliculasweb.Models.PeliculaActor>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Películas y Actores";
 }
 
-<h1>Index</h1>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-danger">Películas y Actores</h1>
+        <a asp-action="Create" class="btn btn-success btn-lg">
+            <i class="fas fa-plus"></i> Crear Nueva Relación
+        </a>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Película
-            </th>
-            <th>
-                Actor
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @item.Pelicula?.Titulo (@item.PeliculaId)
-            </td>
-            <td>
-                @item.Actor?.Nombre (@item.ActorId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { peliculaId = item.PeliculaId, actorId = item.ActorId }) |
-                @Html.ActionLink("Details", "Details", new { peliculaId = item.PeliculaId, actorId = item.ActorId }) |
-                @Html.ActionLink("Delete", "Delete", new { peliculaId = item.PeliculaId, actorId = item.ActorId })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-img-top bg-success d-flex align-items-center justify-content-center text-white"
+                        style="height: 150px;">
+                        <i class="fas fa-link fa-3x"></i>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Relación Película-Actor</h5>
+                        <p class="card-text"><strong>Película:</strong> @item.Pelicula?.Titulo</p>
+                        <p class="card-text"><strong>Actor:</strong> @item.Actor?.Nombre</p>
+                        <div class="mt-auto">
+                            <a asp-action="Details" asp-route-peliculaId="@item.PeliculaId"
+                                asp-route-actorId="@item.ActorId" class="btn btn-outline-primary btn-sm">Detalles</a>
+                            <a asp-action="Edit" asp-route-peliculaId="@item.PeliculaId" asp-route-actorId="@item.ActorId"
+                                class="btn btn-outline-secondary btn-sm">Editar</a>
+                            <a asp-action="Delete" asp-route-peliculaId="@item.PeliculaId" asp-route-actorId="@item.ActorId"
+                                class="btn btn-outline-danger btn-sm">Eliminar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

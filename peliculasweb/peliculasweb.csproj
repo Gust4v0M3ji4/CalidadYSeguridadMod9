@@ -15,4 +15,11 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\imagenes\actores\" />
+    <Folder Include="wwwroot\imagenes\cines\" />
+    <Folder Include="wwwroot\imagenes\peliculas\" />
+    <Folder Include="wwwroot\imagenes\trabajadores\" />
+  </ItemGroup>
+
 </Project>

@@ -1,46 +1,57 @@
 ﻿@model peliculasweb.Models.Proyeccion
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Crear Proyección";
 }
 
-<h1>Create</h1>
-
-<h4>Proyeccion</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FechaInicio" class="control-label"></label>
-                <input asp-for="FechaInicio" class="form-control" />
-                <span asp-validation-for="FechaInicio" class="text-danger"></span>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-success text-white">
+                    <h2 class="card-title mb-0">
+                        <i class="fas fa-plus"></i> Crear Nueva Proyección
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <form id="createForm" asp-action="Create">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group mb-3">
+                            <label asp-for="PeliculaId" class="form-label"></label>
+                            <select asp-for="PeliculaId" class="form-control" asp-items="ViewBag.PeliculaId"></select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="CineId" class="form-label"></label>
+                            <select asp-for="CineId" class="form-control" asp-items="ViewBag.CineId"></select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="FechaInicio" class="form-label"></label>
+                            <input asp-for="FechaInicio" class="form-control" type="datetime-local" />
+                            <span asp-validation-for="FechaInicio" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="FechaFin" class="form-label"></label>
+                            <input asp-for="FechaFin" class="form-control" type="datetime-local" />
+                            <span asp-validation-for="FechaFin" class="text-danger"></span>
+                        </div>
+                        <div class="form-group text-center">
+                            <input type="submit" value="Crear" class="btn btn-success btn-lg" />
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver a la Lista
+                    </a>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="FechaFin" class="control-label"></label>
-                <input asp-for="FechaFin" class="form-control" />
-                <span asp-validation-for="FechaFin" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PeliculaId" class="control-label"></label>
-                <select asp-for="PeliculaId" class ="form-control" asp-items="ViewBag.PeliculaId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="CineId" class="control-label"></label>
-                <select asp-for="CineId" class ="form-control" asp-items="ViewBag.CineId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -1,0 +1,59 @@
+@model peliculasweb.Models.Director
+
+@{
+    ViewData["Title"] = "Eliminar Director";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="card-title mb-0">
+                        <i class="fas fa-trash"></i> Eliminar Director
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <h4 class="text-center mb-4">¿Estás seguro de que quieres eliminar este director?</h4>
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            @if (!string.IsNullOrEmpty(Model.ImagenRuta))
+                            {
+                                <img src="@Model.ImagenRuta" class="img-fluid rounded mb-3" alt="Imagen de @Model.Nombre"
+                                    style="max-height: 200px;">
+                            }
+                            else
+                            {
+                                <div class="bg-secondary d-flex align-items-center justify-content-center text-white rounded mb-3"
+                                    style="height: 200px;">
+                                    <i class="fas fa-user-tie fa-3x"></i>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-8">
+                            <dl class="row">
+                                <dt class="col-sm-4">Nombre:</dt>
+                                <dd class="col-sm-8">@Model.Nombre</dd>
+                                <dt class="col-sm-4">Biografía:</dt>
+                                <dd class="col-sm-8">@Model.Biografia</dd>
+                                <dt class="col-sm-4">Fecha de Nacimiento:</dt>
+                                <dd class="col-sm-8">@Model.FechaNacimiento.ToString("dd/MM/yyyy")</dd>
+                                <dt class="col-sm-4">Nacionalidad:</dt>
+                                <dd class="col-sm-8">@Model.Nacionalidad</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <form asp-action="Delete" class="d-inline">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="submit" value="Eliminar" class="btn btn-danger btn-lg" />
+                    </form>
+                    <a asp-action="Index" class="btn btn-secondary btn-lg ms-2">
+                        <i class="fas fa-arrow-left"></i> Cancelar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
