@@ -1,7 +1,6 @@
-
 # A1:2021 - Broken Access Control (Control de Acceso Roto)
 
-👉 [Ver resultados y evidencias de las pruebas (capturas)](resultados.md)
+👉 [Ver resultados y evidencias de las pruebas (capturas)](Resultados.md)
 
 ---
 
@@ -433,12 +432,3 @@ public async Task<IActionResult> Edit(int id)
     return View(pelicula);
 }
 ```
-
----
-
-## 📸 Capturas para el Informe
-
-1. Screenshot de `curl http://localhost:5247/Peliculas/Create` mostrando el formulario sin login
-2. Screenshot de la respuesta 302→200 al crear una película con curl
-3. Screenshot del navegador mostrando la película creada por curl en la lista
-4. Screenshot del código con `[Authorize]` agregado
