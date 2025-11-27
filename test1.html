@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pel&#xED;culas - peliculasweb</title>
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="/css/site.css?v=rY8CcrxpKhpBH3b9GHDWinmdLyBtU33Sh99n0o2Rgx0" />
+    <link rel="stylesheet" href="/peliculasweb.styles.css?v=ZguUPPQlMauG0KoDKqAvOLjJ6-N4HiWaKJrDMUUUtVA" />
+</head>
+
+<body>
+    <header b-r8qgk3cly1>
+        <nav b-r8qgk3cly1 class="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg">
+            <div b-r8qgk3cly1 class="container-fluid">
+                <a class="navbar-brand fw-bold text-warning" href="/">
+                    <i b-r8qgk3cly1 class="fas fa-film me-2"></i>Películas Web
+                </a>
+                <button b-r8qgk3cly1 class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                    data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span b-r8qgk3cly1 class="navbar-toggler-icon"></span>
+                </button>
+                <div b-r8qgk3cly1 class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
+                    <ul b-r8qgk3cly1 class="navbar-nav flex-grow-1 justify-content-center">
+                        <li b-r8qgk3cly1 class="nav-item mx-2">
+                            <a class="nav-link px-3 py-2 rounded-pill " href="/">
+                                <i b-r8qgk3cly1 class="fas fa-home me-1"></i>Home
+                            </a>
+                        </li>
+                        <li b-r8qgk3cly1 class="nav-item mx-2">
+                            <a class="nav-link px-3 py-2 rounded-pill " href="/Actores">
+                                <i b-r8qgk3cly1 class="fas fa-user me-1"></i>Actores
+                            </a>
+                        </li>
+                        <li b-r8qgk3cly1 class="nav-item mx-2">
+                            <a class="nav-link px-3 py-2 rounded-pill active" href="/Peliculas">
+                                <i b-r8qgk3cly1 class="fas fa-film me-1"></i>Películas
+                            </a>
+                        </li>
+                        <li b-r8qgk3cly1 class="nav-item mx-2">
+                            <a class="nav-link px-3 py-2 rounded-pill " href="/Cines">
+                                <i b-r8qgk3cly1 class="fas fa-building me-1"></i>Cines
+                            </a>
+                        </li>
+                        <li b-r8qgk3cly1 class="nav-item mx-2">
+                            <a class="nav-link px-3 py-2 rounded-pill " href="/Trabajadores">
+                                <i b-r8qgk3cly1 class="fas fa-users me-1"></i>Trabajadores
+                            </a>
+                        </li>
+                        <li b-r8qgk3cly1 class="nav-item mx-2">
+                            <a class="nav-link px-3 py-2 rounded-pill " href="/Generos">
+                                <i b-r8qgk3cly1 class="fas fa-tags me-1"></i>Géneros
+                            </a>
+                        </li>
+                        <li b-r8qgk3cly1 class="nav-item mx-2">
+                            <a class="nav-link px-3 py-2 rounded-pill " href="/Proyecciones">
+                                <i b-r8qgk3cly1 class="fas fa-calendar-alt me-1"></i>Proyecciones
+                            </a>
+                        </li>
+                    </ul>
+                    <ul b-r8qgk3cly1 class="navbar-nav">
+                        <li b-r8qgk3cly1 class="nav-item">
+                            <a class="nav-link px-3 py-2 rounded-pill " href="/Home/Privacy">
+                                <i b-r8qgk3cly1 class="fas fa-shield-alt me-1"></i>Privacidad
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div b-r8qgk3cly1 class="container">
+        <main b-r8qgk3cly1 role="main" class="pb-3">
+            
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-primary">Películas</h1>
+        <a class="btn btn-success btn-lg" href="/Peliculas/Create">
+            <i class="fas fa-plus"></i> Crear Nueva Película
+        </a>
+    </div>
+
+    <form method="get" class="mb-4 p-3 bg-light rounded" action="/Peliculas">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="searchString" class="form-label">Buscar por Título:</label>
+                <input type="text" name="searchString" value="&lt;script&gt;alert(1)&lt;/script&gt;" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label for="generoId" class="form-label">Filtrar por Género:</label>
+                <select name="generoId" class="form-control">
+                    <option value="">Todos los Géneros</option>
+                            <option value="1">
+                                Genero1
+                            </option>
+                </select>
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary me-2">Filtrar</button>
+                <a class="btn btn-outline-secondary" href="/Peliculas">Limpiar</a>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+    </div>
+</div>
+        </main>
+    </div>
+
+    <footer b-r8qgk3cly1 class="border-top footer text-muted">
+        <div b-r8qgk3cly1 class="container">
+            &copy; 2025 - peliculasweb - <a href="/Home/Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/site.js?v=hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo"></script>
+    
+</body>
+
+</html>
