@@ -13,6 +13,13 @@
 
 ---
 
+## 🔗 Repositorio con Mejoras Implementadas
+
+✅ **[Ver código con correcciones de seguridad aplicadas](https://github.com/Gust4v0M3ji4/CalidadYSeguridadMod9/tree/FixedPeliculasWeb)**
+
+Todas las vulnerabilidades identificadas han sido corregidas en la rama `FixedPeliculasWeb`. Revisa el archivo [`SECURITY_IMPROVEMENTS.md`](SECURITY_IMPROVEMENTS.md) para ver el detalle completo de los cambios implementados.
+
+---
 ## 🎯 ¿De qué va esto?
 
 Este es el proyecto del **Módulo 8 de Backend Pro Tools** (una aplicación web ASP.NET Core MVC con SQL Server para gestionar películas, actores, cines y demás). Como era un buen proyecto funcional, decidí usarlo para hacer **pruebas de seguridad** siguiendo el OWASP Top 10 (específicamente A1, A2 y A3).
