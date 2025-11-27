@@ -5,7 +5,7 @@
 ## 📚 Documentación de Pruebas
 
 - [A1: Narrativa del laboratorio](ProyectoResults/A1/A1-narrativa.md)
-- [A1: Resultados y evidencias](ProyectoResults/A1/resultados.md)
+- [A1: Resultados y evidencias](ProyectoResults/A1/Resultados.md)
 - [A2: Narrativa del laboratorio](ProyectoResults/A2/A2-narrativa.md)
 - [A2: Resultados y evidencias](ProyectoResults/A2/resultados.md)
 - [A3: Narrativa del laboratorio](ProyectoResults/A3/A3-narrativa.md)

@@ -4,12 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using peliculasweb.Data;
 using peliculasweb.Models;
 
 namespace peliculasweb.Controllers
 {
+    // A2: Aplicar Rate Limiting para prevenir enumeración masiva
+    [EnableRateLimiting("fixed")]
     public class ProyeccionesController : Controller
     {
         private readonly AppDbContext _context;

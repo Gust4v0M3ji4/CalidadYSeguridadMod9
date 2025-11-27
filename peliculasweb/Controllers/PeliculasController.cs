@@ -1,14 +1,18 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using peliculasweb.Data;
 using peliculasweb.Models;
 
 namespace peliculasweb.Controllers
 {
+    // A2: Aplicar Rate Limiting al controlador para prevenir DoS y enumeración masiva
+    [EnableRateLimiting("fixed")]
     public class PeliculasController : Controller
     {
         private readonly AppDbContext _context;
@@ -72,11 +76,44 @@ namespace peliculasweb.Controllers
                     if (files.Count > 0)
                     {
                         var file = files[0];
+
+                        // A3: Validar extensión de archivo permitida
+                        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                        var extension = Path.GetExtension(file.FileName).ToLower();
+
+                        if (!allowedExtensions.Contains(extension))
+                        {
+                            ModelState.AddModelError("ImagenArchivo", "Solo se permiten archivos de imagen (JPG, JPEG, PNG, GIF)");
+                            ViewData["GeneroId"] = new SelectList(_context.Generos, "Id", "Nombre", pelicula.GeneroId);
+                            ViewData["DirectorId"] = new SelectList(_context.Directores, "Id", "Nombre", pelicula.DirectorId);
+                            return View(pelicula);
+                        }
+
+                        // A3: Validar tipo MIME del archivo
+                        var allowedMimeTypes = new[] { "image/jpeg", "image/png", "image/gif", "image/jpg" };
+                        if (!allowedMimeTypes.Contains(file.ContentType.ToLower()))
+                        {
+                            ModelState.AddModelError("ImagenArchivo", "El tipo de archivo no es válido");
+                            ViewData["GeneroId"] = new SelectList(_context.Generos, "Id", "Nombre", pelicula.GeneroId);
+                            ViewData["DirectorId"] = new SelectList(_context.Directores, "Id", "Nombre", pelicula.DirectorId);
+                            return View(pelicula);
+                        }
+
+                        // A3: Validar tamaño del archivo (5MB max)
+                        if (file.Length > 5 * 1024 * 1024)
+                        {
+                            ModelState.AddModelError("ImagenArchivo", "El archivo no debe exceder 5MB");
+                            ViewData["GeneroId"] = new SelectList(_context.Generos, "Id", "Nombre", pelicula.GeneroId);
+                            ViewData["DirectorId"] = new SelectList(_context.Directores, "Id", "Nombre", pelicula.DirectorId);
+                            return View(pelicula);
+                        }
+
                         var directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagenes/peliculas");
                         if (!Directory.Exists(directoryPath))
                             Directory.CreateDirectory(directoryPath);
 
-                        var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+                        // A3: Usar GUID para nombre de archivo (previene path traversal y sobrescritura)
+                        var fileName = Guid.NewGuid() + extension;
                         var filePath = Path.Combine(directoryPath, fileName);
 
                         using (var stream = new FileStream(filePath, FileMode.Create))
