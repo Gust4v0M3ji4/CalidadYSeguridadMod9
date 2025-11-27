@@ -17,7 +17,7 @@
 
 ✅ **[Ver código con correcciones de seguridad aplicadas](https://github.com/Gust4v0M3ji4/CalidadYSeguridadMod9/tree/FixedPeliculasWeb)**
 
-Todas las vulnerabilidades identificadas han sido corregidas en la rama `FixedPeliculasWeb`. Revisa el archivo [`SECURITY_IMPROVEMENTS.md`](SECURITY_IMPROVEMENTS.md) para ver el detalle completo de los cambios implementados.
+Todas las vulnerabilidades identificadas han sido corregidas en la rama `FixedPeliculasWeb`.
 
 ---
 ## 🎯 ¿De qué va esto?
